@@ -1,0 +1,7 @@
+[GET] /api/MenuItems  
+[GET] /api/MenuItems/{id}  
+[POST] /api/Orders 
+[GET] /api/Orders/{id}
+[GET] /api/Restaurants 
+[GET] /api/Restaurants/{id}
+[GET] /api/Restaurants/{id}/menuitems

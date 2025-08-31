@@ -1,103 +1,60 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="flex-1">
+      <section className="bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-amber-200 via-white to-white dark:from-amber-900/40 dark:via-black dark:to-black">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-32 grid md:grid-cols-2 gap-10 items-center">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-bold leading-tight tracking-tight">
+              Crave it. Find it. FoodieGo.
+            </h1>
+            <p className="mt-4 text-lg text-black/70 dark:text-white/70">
+              Explore top-rated restaurants, browse mouth-watering menus, and place your order in seconds.
+            </p>
+            <div className="mt-8 flex gap-3">
+              <Link href="/restaurants" className="px-5 py-3 rounded-md bg-foreground text-background font-medium">
+                Explore Restaurants
+              </Link>
+              <Link href="/about" className="px-5 py-3 rounded-md border border-black/10 dark:border-white/20 hover:bg-black/[.05] dark:hover:bg-white/[.06]">
+                Learn More
+              </Link>
+            </div>
+          </div>
+          <div className="rounded-xl border border-black/10 dark:border-white/15 p-6 bg-white/60 dark:bg-white/5">
+            <div className="grid grid-cols-3 gap-3">
+              <img src="/images/pexels-pixabay-460537.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+              <img src="/images/pexels-fotios-photos-776538.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+              <img src="/images/pexels-reneterp-1581384.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+              <img src="/images/pexels-pixabay-260922.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+              <img src="/images/pexels-willpicturethis-2641886.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+              <img src="/images/pexels-rajesh-tp-749235-1633525.jpg" alt="Delicious food" className="h-24 w-full rounded-lg object-cover" />
+            </div>
+            <p className="mt-4 text-sm text-black/60 dark:text-white/60">A taste of what awaits you…</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </section>
+
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
+        <h2 className="text-2xl font-semibold">How it works</h2>
+        <div className="mt-6 grid sm:grid-cols-3 gap-6">
+          {["Discover", "Browse", "Enjoy"].map((title, idx) => (
+            <div key={title} className="rounded-xl border border-black/10 dark:border-white/15 p-6">
+              <div className="w-10 h-10 rounded-full bg-foreground text-background flex items-center justify-center font-semibold">
+                {idx + 1}
+              </div>
+              <h3 className="mt-4 font-medium">{title}</h3>
+              <p className="mt-2 text-sm text-black/70 dark:text-white/70">
+                {idx === 0 && "Find restaurants near you with the best ratings and cuisine types."}
+                {idx === 1 && "Explore detailed menus with prices and mouth-watering descriptions."}
+                {idx === 2 && "Place your order and track it easily in your orders page."}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </main>
   );
 }
+
+
