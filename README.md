@@ -16,6 +16,28 @@ A modern, responsive food delivery web application built with Next.js 14, TypeSc
 - 📊 **Order Management** - Track order history and manage current cart
 - 🎨 **Modern UI/UX** - Clean, intuitive interface with smooth animations
 
+## 📸 Screenshots
+
+### 🏠 Landing Page
+![Landing Page](/readme/readme-landing-page.png)
+*Beautiful hero section with food imagery and call-to-action buttons*
+
+### 🏪 Restaurants Page
+![Restaurants Page](/readme/readme-restaurants-page.png)
+*Grid layout showcasing all available restaurants with images and descriptions*
+
+### 🍽️ Restaurant Menu Page
+![Menu Page](/readme/readme-menu-page.png)
+*Detailed restaurant menu with food images, descriptions, and add to cart functionality*
+
+### 🛒 Orders & Cart Page
+![Orders Page](/readme/readme-orders-page.png)
+*Complete cart management with quantity controls and order history*
+
+### ℹ️ About Page
+![About Page](/readme/readme-about-page.png)
+*Company information and mission details*
+
 ## 🚀 Getting Started
 
 ### Prerequisites
