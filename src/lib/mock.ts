@@ -6,6 +6,9 @@ export type MockRestaurant = {
   location?: string;
   description?: string;
   image?: string;
+  priceRange: string;
+  cuisines: string[];
+  rating: number;
 };
 
 export type MockMenuItem = {
@@ -15,6 +18,12 @@ export type MockMenuItem = {
   description?: string;
   price: number;
   image?: string;
+  category: string;
+  dietaryRestrictions: string[];
+  spiceLevel: string;
+  isVegetarian: boolean;
+  isVegan: boolean;
+  isGlutenFree: boolean;
 };
 
 export type MockOrderItem = {
@@ -66,6 +75,9 @@ function generateRestaurants(count: number): MockRestaurant[] {
       location: cities[i % cities.length],
       description: `A delightful place to enjoy curated flavors and seasonal specials. ${restaurantNames[i % restaurantNames.length]}.`,
       image: `/restaurants/restaurant-${id}.jpg`,
+      priceRange: ["$", "$$", "$$$", "$$$$"][i % 4],
+      cuisines: [["Italian", "Japanese", "Mexican", "Chinese", "American", "French", "Thai", "Indian", "Korean", "Spanish"][i % 10]],
+      rating: 4.0 + (i % 10) * 0.1,
     };
   });
 }
@@ -87,6 +99,12 @@ function generateMenuItems(restaurants: MockRestaurant[], perRestaurant: number)
         description: `Chef's special ${food.toLowerCase()} with a ${adjective.toLowerCase()} twist.`,
         price,
         image: `/menus/menu-${(j + 1)}.jpg`,
+        category: ["Appetizers", "Entrees", "Desserts", "Drinks"][j % 4],
+        dietaryRestrictions: [],
+        spiceLevel: ["Mild", "Medium", "Hot", "Very Hot"][j % 4],
+        isVegetarian: j % 2 === 0,
+        isVegan: j % 3 === 0,
+        isGlutenFree: j % 5 === 0,
       });
     }
   }
@@ -223,6 +241,134 @@ export function getOrders(): MockOrder[] {
     console.error('Failed to get orders:', error);
     return [];
   }
+}
+
+// Filter restaurants based on filter criteria
+export function filterRestaurants(restaurants: MockRestaurant[], filters: any): MockRestaurant[] {
+  return restaurants.filter(restaurant => {
+    // Search filter
+    if (filters.search && filters.search.trim() !== "") {
+      const searchTerm = filters.search.toLowerCase();
+      const matchesSearch = 
+        restaurant.name.toLowerCase().includes(searchTerm) ||
+        restaurant.description?.toLowerCase().includes(searchTerm) ||
+        restaurant.cuisines.some(cuisine => 
+          cuisine.toLowerCase().includes(searchTerm)
+        ) ||
+        restaurant.location?.toLowerCase().includes(searchTerm);
+      
+      if (!matchesSearch) return false;
+    }
+
+    // Cuisine type filter
+    if (filters.cuisineType && filters.cuisineType !== "All Cuisines") {
+      if (!restaurant.cuisines.includes(filters.cuisineType)) {
+        return false;
+      }
+    }
+
+    // Price range filter
+    if (filters.priceRange && filters.priceRange !== "All Prices") {
+      const priceMap: { [key: string]: string } = {
+        "$ (Under $10)": "$",
+        "$$ ($10 - $25)": "$$",
+        "$$$ ($25 - $50)": "$$$",
+        "$$$$ (Over $50)": "$$$$"
+      };
+      
+      if (restaurant.priceRange !== priceMap[filters.priceRange]) {
+        return false;
+      }
+    }
+
+    // Location filter
+    if (filters.location && filters.location !== "All Locations") {
+      if (restaurant.location !== filters.location) {
+        return false;
+      }
+    }
+
+    // Rating filter
+    if (filters.rating && filters.rating !== "All Ratings") {
+      const ratingMap: { [key: string]: number } = {
+        "4.5+ Stars": 4.5,
+        "4.0+ Stars": 4.0,
+        "3.5+ Stars": 3.5,
+        "3.0+ Stars": 3.0
+      };
+      
+      if (restaurant.rating < ratingMap[filters.rating]) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+}
+
+// Filter menu items based on filter criteria
+export function filterMenuItems(menuItems: MockMenuItem[], filters: any): MockMenuItem[] {
+  return menuItems.filter(item => {
+    // Search filter
+    if (filters.search && filters.search.trim() !== "") {
+      const searchTerm = filters.search.toLowerCase();
+      const matchesSearch = 
+        item.name.toLowerCase().includes(searchTerm) ||
+        item.description?.toLowerCase().includes(searchTerm) ||
+        item.category.toLowerCase().includes(searchTerm);
+      
+      if (!matchesSearch) return false;
+    }
+
+    // Category filter
+    if (filters.category && filters.category !== "All Categories") {
+      if (item.category !== filters.category) {
+        return false;
+      }
+    }
+
+    // Price range filter
+    if (filters.priceRange && filters.priceRange !== "All Prices") {
+      const priceMap: { [key: string]: { min: number; max: number } } = {
+        "$ (Under $10)": { min: 0, max: 10 },
+        "$$ ($10 - $25)": { min: 10, max: 25 },
+        "$$$ ($25 - $50)": { min: 25, max: 50 },
+        "$$$$ (Over $50)": { min: 50, max: Infinity }
+      };
+      
+      const range = priceMap[filters.priceRange];
+      if (item.price < range.min || item.price > range.max) {
+        return false;
+      }
+    }
+
+    // Spice level filter
+    if (filters.spiceLevel && filters.spiceLevel !== "All Spice Levels") {
+      if (item.spiceLevel !== filters.spiceLevel) {
+        return false;
+      }
+    }
+
+    // Dietary restrictions filter
+    if (filters.dietaryRestrictions && filters.dietaryRestrictions.length > 0) {
+      const hasMatchingRestriction = filters.dietaryRestrictions.some((restriction: string) => {
+        switch (restriction) {
+          case "Vegetarian":
+            return item.isVegetarian;
+          case "Vegan":
+            return item.isVegan;
+          case "Gluten-Free":
+            return item.isGlutenFree;
+          default:
+            return false;
+        }
+      });
+      
+      if (!hasMatchingRestriction) return false;
+    }
+
+    return true;
+  });
 }
 
 
