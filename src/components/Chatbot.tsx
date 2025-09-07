@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import ReactMarkdown from 'react-markdown';
 
 interface Message {
   id: string;
@@ -32,6 +33,8 @@ export default function Chatbot() {
   ]);
   const [inputText, setInputText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationId, setConversationId] = useState<string | null>(null);
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -69,17 +72,48 @@ export default function Chatbot() {
     setInputText('');
     setIsTyping(true);
 
-    // Simulate API call delay
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:8001/api/v1/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: userMessage.text,
+          conversation_history: messages.map(m => ({
+            role: m.isUser ? 'user' : 'assistant',
+            content: m.text,
+          })),
+          conversation_id: conversationId,
+        }),
+      });
+
+      if (!response.ok) throw new Error('API error');
+
+      const data = await response.json();
+
       const botResponse: Message = {
         id: generateId(),
-        text: getRandomResponse(),
+        text: data.response || getRandomResponse(),
         isUser: false,
         timestamp: new Date(),
       };
+
+      setConversationId(data.conversation_id || null);
       setMessages(prev => [...prev, botResponse]);
+    } catch (error) {
+      console.error('Chatbot API error:', error);
+
+      // fallback
+      const fallbackResponse: Message = {
+        id: generateId(),
+        text: "AI chatbot API is not working, defaulting to placeholders: " + getRandomResponse(),
+        isUser: false,
+        timestamp: new Date(),
+      };
+
+      setMessages(prev => [...prev, fallbackResponse]);
+    } finally {
       setIsTyping(false);
-    }, 1000 + Math.random() * 1000); // Random delay between 1-2 seconds
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -155,7 +189,7 @@ export default function Chatbot() {
                       : 'bg-white text-gray-800 border border-gray-200 rounded-bl-sm'
                   }`}
                 >
-                  <p>{message.text}</p>
+                  <ReactMarkdown>{message.text}</ReactMarkdown>
                   <p className={`text-xs mt-1 ${
                     message.isUser ? 'text-blue-100' : 'text-gray-500'
                   }`}>
